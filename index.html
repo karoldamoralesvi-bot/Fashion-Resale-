@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ecommerce Ropa 2da - Karol Daniela Morales</title>
+  <meta name="description" content="Tienda de ropa de segunda mano - boutique fashion. Carrito, filtros y PayPal sandbox." />
+
+  <!-- Tipografía minimalista -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================
+       PALETA — más trendy + oliva encendido
+       ============================ */
+    :root{
+      --bg: #faf9f6;            /* crema editorial */
+      --text: #1a1a1a;          
+      --muted: #777;
+      --panel: #101010;         /* negro elegante */
+      --card: #ffffff;
+      --border: rgba(0,0,0,0.08);
+
+      /* nuevo oliva más encendido */
+      --oliva: #7A8F24;         
+      --oliva-light: #c8d38b;
+      --oliva-dark: #5c6a15;
+
+      --radius: 14px;
+      --shadow: 0 6px 22px rgba(0,0,0,0.08);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
+      color:var(--text);
+      padding:22px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ============================
+       Encabezado (estilo editorial)
+       ============================ */
+    header{
+      margin-bottom:26px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:20px;
+    }
+
+    .brand h1{
+      margin:0;
+      font-family:"Playfair Display", serif;
+      font-size:28px;
+      font-weight:600;
+      letter-spacing:-0.5px;
+    }
+    .brand p{
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .controls{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    select{
+      padding:10px 12px;
+      border-radius:var(--radius);
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--text);
+      font-size:14px;
+    }
+
+    /* ============================
+       Layout principal
+       ============================ */
+    main{
+      display:grid;
+      grid-template-columns: 1fr 370px;
+      gap:28px;
+      align-items:start;
+    }
+
+    /* ============================
+       Tarjetas de productos (trendy boutique)
+       ============================ */
+    #productos{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+      gap:22px;
+    }
+
+    .producto{
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      border:1px solid var(--border);
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .producto:hover{
+      transform:translateY(-5px);
+      box-shadow:0 12px 30px rgba(0,0,0,0.12);
+    }
+    .producto img{
+      width:100%;
+      height:300px;
+      object-fit:cover;
+      border-radius:var(--radius);
+      background:#eee;
+    }
+    .producto h3{
+      margin:14px 0 6px;
+      font-size:18px;
+      font-weight:600;
+    }
+    .producto p{
+      margin:0; 
+      color:var(--muted);
+      font-size:14px;
+    }
+    .meta{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:10px 0 12px;
+      font-size:14px;
+    }
+
+    .button{
+      margin-top:auto;
+      background:var(--oliva);
+      color:#fff;
+      padding:12px;
+      border:none;
+      border-radius:var(--radius);
+      cursor:pointer;
+      font-weight:600;
+      transition:background .18s;
+    }
+    .button:hover{
+      background:var(--oliva-dark);
+    }
+
+    /* ============================
+       Carrito lateral (trendy dark panel)
+       ============================ */
+    .carrito{
+      background:var(--panel);
+      padding:20px;
+      border-radius:var(--radius);
+      color:#fff;
+      position:sticky;
+      top:20px;
+      box-shadow:0 8px 32px rgba(0,0,0,0.3);
+    }
+    .carrito h2{
+      margin:0 0 12px;
+      font-size:20px;
+      font-weight:600;
+    }
+    #lista-carrito{
+      list-style:none;
+      padding:0;
+      margin:12px 0 16px;
+      max-height:330px;
+      overflow:auto;
+    }
+    #lista-carrito li{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px;
+      background:rgba(255,255,255,0.05);
+      border-radius:var(--radius);
+      margin-bottom:10px;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .qty{display:flex;align-items:center;gap:10px}
+    .qty button{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.2);
+      color:#fff;
+      width:32px;height:32px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:16px;
+    }
+    .remove{
+      background: #bb2a2a;
+      border:none;
+      color:#fff;
+      padding:6px 10px;
+      border-radius:8px;
+      cursor:pointer;
+    }
+
+    .totales p{
+      margin:4px 0;
+      font-size:14px;
+      color:var(--oliva-light);
+    }
+    .totales .total{
+      font-size:20px;
+      font-weight:700;
+      color:#fff;
+      margin-top:12px;
+    }
+
+    .acciones{
+      display:flex;
+      gap:10px;
+      margin-top:16px;
+      flex-wrap:wrap;
+    }
+    .vaciar{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.2);
+      padding:10px 12px;
+      border-radius:var(--radius);
+      color:#fff;
+      cursor:pointer;
+    }
+    .finalizar{
+      background:var(--oliva);
+      border:none;
+      padding:10px 12px;
+      border-radius:var(--radius);
+      color:#fff;
+      cursor:pointer;
+      font-weight:600;
+    }
+
+    .pago{
+      margin-top:16px;
+      background:#131313;
+      padding:14px;
+      border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+    .hint{
+      margin-top:6px;
+      color:#9f9f9f;
+      font-size:12px;
+    }
+
+    footer{
+      margin-top:40px;
+      text-align:center;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    @media(max-width:900px){
+      main{
+        grid-template-columns:1fr;
+      }
+      .carrito{
+        position:relative;
+        top:0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================
+       ENCABEZADO
+       ============================ -->
+  <header>
+    <div class="brand">
+      <h1>Karol Daniela — Fashion Resale</h1>
+      <p>Second-hand boutique • curated looks</p>
+    </div>
+
+    <div class="controls">
+      <label for="categoria">Filtrar:</label>
+      <select id="categoria">
+        <option value="todos">Todos</option>
+        <option value="Chaquetas">Chaquetas</option>
+        <option value="Faldas">Faldas</option>
+        <option value="Vestidos">Vestidos</option>
+        <option value="Pantalones">Pantalones</option>
+        <option value="Calzado">Calzado</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- ============================
+       MAIN
+       ============================ -->
+  <main>
+    <section id="productos"></section>
+
+    <aside class="carrito">
+      <h2>🧾 Carrito</h2>
+      <p><strong>Artículos: <span id="cantidad-carrito">0</span></strong></p>
+
+      <ul id="lista-carrito"></ul>
+
+      <div class="totales">
+        <p>Subtotal: <strong id="subtotal-text">$0.00</strong></p>
+        <p>Descuento: <strong id="descuento-text">$0.00</strong></p>
+        <p>Impuestos: <strong id="impuestos-text">$0.00</strong></p>
+        <p class="total">Total: <strong id="total-text">$0.00</strong></p>
+      </div>
+
+      <div class="acciones">
+        <button id="btn-vaciar" class="vaciar">🧼 Vaciar</button>
+        <button id="btn-finalizar" class="finalizar">Finalizar</button>
+      </div>
+
+      <div class="pago">
+        <h3>PayPal Sandbox</h3>
+        <div id="paypal-button-container" style="margin-top:10px; display:none;"></div>
+        <p class="hint">Client ID actual: <code>sb</code></p>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    © <span id="year"></span> Karol Daniela Morales — Fashion Resale
+  </footer>
+
+  <!-- PayPal -->
+  <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD&components=buttons"></script>
+
+  <script>
+    /* ===== CONFIG ===== */
+    const MONEDA = 'USD';
+    const LOCALE = 'es-CO';
+    const TAX_RATE = 0.00;
+    const DESCUENTO = 0.00;
+
+    const productos = [
+      {
+        id: 1,
+        nombre: "Abrigo de cuero",
+        precio: 25.00,
+        categoria: "Chaquetas",
+        img: "https://studiofco.vtexassets.com/arquivos/ids/1611608/-stfco-producto-Abrigosgabanes-NEGRO-S291625-1.jpg?v=638628861051700000"
+      },
+      {
+        id: 2,
+        nombre: "Maxifalda escocesa",
+        precio: 18.00,
+        categoria: "Faldas",
+        img: "https://media.vogue.mx/photos/66e996b525b4ccf9fd4c3162/2:3/w_1600,c_limit/gonna%20kilt.jpg"
+      },
+      {
+        id: 3,
+        nombre: "Vestido Encaje",
+        precio: 30.00,
+        categoria: "Vestidos",
+        img: "https://vader-prod.s3.amazonaws.com/1709666377-vestido-encaje-transparente-h-m-65e77020b06e2.jpg"
+      },
+      {
+        id: 4,
+        nombre: "Pantalon Cuero Rojo",
+        precio: 18.00,
+        categoria: "Pantalones",
+        img: "https://s3.ppllstatics.com/mujerhoy/www/multimedia/202208/25/media/GA%20-%2011%20pantalones/11-pantalones-looks-faciles-7901840800_1_1_11134528152_1_1_2.jpg"
+      },
+      {
+        id: 5,
+        nombre: "Tabi Shoes",
+        precio: 22.00,
+        categoria: "Calzado",
+        img: "https://i.etsystatic.com/50602530/r/il/940969/6903880498/il_794xN.6903880498_2xgp.jpg"
+      }
+    ];
+
+    /* ===== ESTADO ===== */
+    let carrito = new Map();
+    const STORAGE = "carrito_kd_v1";
+    const FILTRO = "filtro_kd_v1";
+
+    const els = {
+      productos: document.getElementById("productos"),
+      lista: document.getElementById("lista-carrito"),
+      subtotal: document.getElementById("subtotal-text"),
+      descuento: document.getElementById("descuento-text"),
+      impuestos: document.getElementById("impuestos-text"),
+      total: document.getElementById("total-text"),
+      cantidad: document.getElementById("cantidad-carrito"),
+      select: document.getElementById("categoria"),
+      vaciar: document.getElementById("btn-vaciar"),
+      finalizar: document.getElementById("btn-finalizar"),
+      paypal: document.getElementById("paypal-button-container"),
+    };
+
+    const money = new Intl.NumberFormat(LOCALE, {style:'currency', currency:MONEDA});
+
+    function renderProductos(lista){
+      els.productos.innerHTML = "";
+      lista.forEach(p=>{
+        const card = document.createElement("article");
+        card.className = "producto";
+        card.innerHTML = `
+          <img src="${p.img}" alt="${p.nombre}">
+          <h3>${p.nombre}</h3>
+          <div class="meta">
+            <span>${p.categoria}</span>
+            <strong>${money.format(p.precio)}</strong>
+          </div>
+          <button class="button" data-add="${p.id}">Agregar</button>
+        `;
+        els.productos.appendChild(card);
+      });
+    }
+
+    function filtrar(){
+      const f = els.select.value;
+      const data = f === "todos" ? productos : productos.filter(p=>p.categoria === f);
+      localStorage.setItem(FILTRO, f);
+      renderProductos(data);
+    }
+
+    function persist(){ localStorage.setItem(STORAGE, JSON.stringify(Array.from(carrito.entries()))); }
+    function load(){
+      const raw = localStorage.getItem(STORAGE);
+      if(raw){
+        carrito = new Map(JSON.parse(raw));
+      }
+    }
+
+    function totales(){
+      let subtotal = 0;
+      let cantidad = 0;
+      carrito.forEach(i=>{
+        subtotal += i.precio * i.cantidad;
+        cantidad += i.cantidad;
+      });
+      let desc = Math.min(DESCUENTO, subtotal);
+      let base = subtotal - desc;
+      let imp = base * TAX_RATE;
+      let total = base + imp;
+      return {subtotal, desc, imp, total, cantidad};
+    }
+
+    function pintarCarrito(){
+      els.lista.innerHTML = "";
+      carrito.forEach(i=>{
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <div style="flex:1">
+            <strong>${i.nombre}</strong><br>
+            <small>${money.format(i.precio)} c/u</small>
+          </div>
+          <div class="qty">
+            <button data-dec="${i.id}">-</button>
+            <span>${i.cantidad}</span>
+            <button data-inc="${i.id}">+</button>
+            <button class="remove" data-del="${i.id}">❌</button>
+          </div>
+        `;
+        els.lista.appendChild(li);
+      });
+
+      const {subtotal, desc, imp, total, cantidad} = totales();
+      els.subtotal.textContent = money.format(subtotal);
+      els.descuento.textContent = money.format(desc);
+      els.impuestos.textContent = money.format(imp);
+      els.total.textContent = money.format(total);
+      els.cantidad.textContent = cantidad;
+
+      // Mostrar PayPal solo si total > 0
+      els.paypal.style.display = total > 0 ? "block" : "none";
+      renderPayPal(total);
+    }
+
+    function add(id){
+      const p = productos.find(x=>x.id == id);
+      const item = carrito.get(id);
+      if(item){ item.cantidad++; }
+      else{ carrito.set(id, {...p, cantidad:1}); }
+      persist(); pintarCarrito();
+    }
+    function dec(id){
+      const item = carrito.get(id);
+      if(!item) return;
+      item.cantidad--;
+      if(item.cantidad <= 0) carrito.delete(id);
+      persist(); pintarCarrito();
+    }
+    function del(id){
+      carrito.delete(id);
+      persist(); pintarCarrito();
+    }
+
+    // Delegación de eventos
+    document.addEventListener("click", e=>{
+      if(e.target.dataset.add) add(+e.target.dataset.add);
+      if(e.target.dataset.inc) add(+e.target.dataset.inc);
+      if(e.target.dataset.dec) dec(+e.target.dataset.dec);
+      if(e.target.dataset.del) del(+e.target.dataset.del);
+    });
+
+    els.vaciar.addEventListener("click", ()=>{
+      if(confirm("¿Vaciar carrito?")){
+        carrito.clear(); persist(); pintarCarrito();
+      }
+    });
+
+    els.finalizar.addEventListener("click", ()=>{
+      if(carrito.size === 0) return alert("Carrito vacío");
+      alert("Pedido realizado (simulación). Gracias ♥");
+      carrito.clear(); persist(); pintarCarrito();
+    });
+
+    /* ----- PayPal ------- */
+    let paypalRendered = null;
+    function renderPayPal(total){
+      if(!window.paypal) return;
+      if(total <= 0){
+        els.paypal.innerHTML = "";
+        paypalRendered = null;
+        return;
+      }
+      if(paypalRendered === total) return;
+
+      els.paypal.innerHTML = "";
+      paypalRendered = total;
+
+      paypal.Buttons({
+        createOrder:(data,actions)=>actions.order.create({
+          purchase_units:[{
+            amount:{value: total.toFixed(2), currency_code:MONEDA}
+          }]
+        }),
+        onApprove:(data,actions)=>actions.order.capture().then(det=>{
+          alert("Pago aprobado (sandbox). ¡Gracias!");
+          carrito.clear(); persist(); pintarCarrito();
+        }),
+        onError:(err)=>alert("Error con PayPal.")
+      }).render("#paypal-button-container");
+    }
+
+    /* INIT */
+    (function init(){
+      document.getElementById("year").textContent = new Date().getFullYear();
+      load();
+      const prev = localStorage.getItem(FILTRO);
+      if(prev) els.select.value = prev;
+      filtrar();
+      pintarCarrito();
+    })();
+  </script>
+
+</body>
+</html>
